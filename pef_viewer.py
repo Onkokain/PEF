@@ -90,7 +90,7 @@ def main():
     app=PEF_Viewer(root)
 
     if len(sys.argv)>1:
-        app.load(sys.argv[1])
+        root.after(200, lambda: app.load(sys.argv[1]))
 
     root.mainloop()
 
