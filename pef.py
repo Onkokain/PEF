@@ -1,5 +1,8 @@
 # making a custom image extension :3
 
+from PIL import Image
+
+
 def encoder(width,height,pixels,path): #RGBA as a hash is supported with 4 channels
     with open(path,'wb') as file:
         if width*height!=len(pixels) or width<=0 or height<=0 or any(len(pixel)!=8 for pixel in pixels):
@@ -63,3 +66,31 @@ def decoder(path):
 
         return width,height,pixels
 
+
+
+def load_image(path):
+    # coverting PNG/JPG to PEF
+    image=Image.open(path)
+    image=image.convert('RGBA')
+
+    width,height=image.size
+    pixels=[]
+
+    for x in range(height):
+        for y in range(width):
+            r,g,b,a=image.getpixel((y,x))
+            hex_pixel=f'{r:02X}{g:02X}{b:02X}{a:02X}'
+            pixels.append(hex_pixel)
+    return width,height,pixels
+
+def save_image(width,height,pixels,path):
+    # converting PEF to PNG
+    image=Image.new('RGBA',(width,height))
+    i=0
+    for x in range(height):
+        for y in range(width):
+            hex_pixel=pixels[i]
+            r,g,b,a=int(hex_pixel[:2],16),int(hex_pixel[2:4],16),int(hex_pixel[4:6],16),int(hex_pixel[6:8],16)
+            image.putpixel((y,x),(r,g,b,a))
+            i+=1
+    image.save(path)
