@@ -5,7 +5,7 @@ a = Analysis(
     ['pef_viewer.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('logo-Pedro.png', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
